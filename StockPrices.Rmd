@@ -16,7 +16,4 @@ stock_table <- doc[[3]]
 stock_table$Symbol <- as.character(stock_table$Symbol)
 stock_table$Symbol[17] <-"BRK-B"
 
-symbol_names <- stock_table$Symbol
-
 ```
-
