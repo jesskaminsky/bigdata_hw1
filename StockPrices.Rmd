@@ -11,5 +11,10 @@ library(httr)
 
 link = "http://en.wikipedia.org/wiki/S%26P_100"
 doc <- readHTMLTable(rawToChar(GET(link)$content))
+
+stock_table <- doc[[3]]
+stock_table$Symbol <- as.character(stock_table$Symbol)
+stock_table$Symbol[17] <-"BRK-B"
+
 ```
 
