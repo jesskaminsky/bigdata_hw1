@@ -19,23 +19,7 @@ stock_table$Symbol[17] <-"BRK-B"
 
 symbol_names <- stock_table$Symbol
 
-<<<<<<< HEAD
-getYahooQuote <- function(symbol="xom") {
-    theurl <- paste0("https://finance.yahoo.com/quote/", symbol, "?p=", symbol)
-    ## better formatting
-    aa = getURL(theurl)
-    aa <- readLines(tc <- textConnection(aa)); close(tc)
-    
-    ## check chrome or safari or firefox for patterns
-    bb =(  strsplit(as.character(aa[5]), ">") ) 
-    
-    ## find price: the next line after "react-text: 36 is" is the current price
-    pricetxt <- bb[[1]][grep("react-text: 36", bb[[1]])+1]
-    
-    ## get numeric price
-    as.numeric( strsplit( pricetxt, "<")[[1]][1] ) 
-  }
-=======
+
 ## Try the standard way for downloading webpages 
 theurl <- "https://finance.yahoo.com/quote/XOM/history?p=XOM"
 a <- getURL(theurl)
@@ -47,12 +31,13 @@ close(fileConn)
 
 ## R Selenium
 library(RSelenium)
+
 rs <- rsDriver(extraCapabilities = list(
     chromeOptions = 
         list(prefs = list(
             "profile.default_content_settings.popups" = 0L,
             "download.prompt_for_download" = FALSE,
-            "download.default_directory" = "/Users/xluo/Downloads"
+            "download.default_directory" = "C:/Users/jkamins1/Desktop/stockcsv"
         )
         )
 ))
@@ -69,15 +54,10 @@ downloadHPYahoo <- function(symbol) {
     hpcsv <- rsc$findElement("xpath", "//a[contains(@download, 'csv')]")
     hpcsv$clickElement()
 }
->>>>>>> 5e3c9af06dcb5a65948803de68218b0991206df4
 
-for (s in stock_table) {
+
+for (s in symbol_names) {
     downloadHPYahoo(s)
 }
 
-<<<<<<< HEAD
-
-getYahooQuote(symbol = symbol_names[1])
-=======
->>>>>>> 5e3c9af06dcb5a65948803de68218b0991206df4
 ```
