@@ -8,6 +8,7 @@ output: pdf_document
 ```{r}
 library("XML")
 library(httr)
+library(RCurl)
 
 link = "http://en.wikipedia.org/wiki/S%26P_100"
 doc <- readHTMLTable(rawToChar(GET(link)$content))
@@ -17,4 +18,24 @@ stock_table$Symbol <- as.character(stock_table$Symbol)
 stock_table$Symbol[17] <-"BRK-B"
 
 symbol_names <- stock_table$Symbol
+
+getYahooQuote <- function(symbol="xom") {
+    theurl <- paste0("https://finance.yahoo.com/quote/", symbol, "?p=", symbol)
+    ## better formatting
+    aa = getURL(theurl)
+    aa <- readLines(tc <- textConnection(aa)); close(tc)
+    
+    ## check chrome or safari or firefox for patterns
+    bb =(  strsplit(as.character(aa[5]), ">") ) 
+    
+    ## find price: the next line after "react-text: 36 is" is the current price
+    pricetxt <- bb[[1]][grep("react-text: 36", bb[[1]])+1]
+    
+    ## get numeric price
+    as.numeric( strsplit( pricetxt, "<")[[1]][1] ) 
+}
+
+
+
+getYahooQuote(symbol = symbol_names)
 ```
