@@ -33,9 +33,9 @@ getYahooQuote <- function(symbol="xom") {
     
     ## get numeric price
     as.numeric( strsplit( pricetxt, "<")[[1]][1] ) 
-}
+  }
 
 
 
-getYahooQuote(symbol = symbol_names)
+getYahooQuote(symbol = symbol_names[1])
 ```
