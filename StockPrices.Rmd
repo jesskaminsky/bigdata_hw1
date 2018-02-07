@@ -6,6 +6,7 @@ output: pdf_document
 ---
 
 ```{r}
+<<<<<<< HEAD
 link = "http://en.wikipedia.org/wiki/S%26P_100"
 data <- readHTMLTable(link)
 doc <- htmlParse(link)
@@ -16,3 +17,15 @@ library(httr)
 doc <- readHTMLTable(rawToChar(GET(link)$content))
 ```
 
+=======
+### Load required packages
+
+library(XML)
+
+```
+
+```{r}
+data = readHTMLTable("http://en.wikipedia.org/wiki/S%26P_100")
+
+```
+>>>>>>> 7ad606e891f326f78a8817adb52c7c539c2e2641
