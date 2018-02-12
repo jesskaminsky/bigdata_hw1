@@ -23,8 +23,45 @@ summary(cars)
 
 You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r}
+install.packages("rebus")
+install.packages("RCurl")
+install.packages("XML")
+library(rebus)
+NIH <- read.csv("NIHHarvard.csv")
+T_F <- str_detect(NIH$Activity, pattern = START %R% or("T", "F"))
+research_awards <- NIH[!T_F, ]
+
+names <- as.character(unique(research_awards$Contact.PI...Project.Leader))
+
+first_last <- str_extract(names, pattern = START %R% one_or_more(or(ALPHA, "-", " ")) %R% ", " %R% one_or_more(ALPHA))
+########################################
+
+library(RCurl)
+library(XML)                          
+
+
+getCount <- function(author) {
+  re <- NULL
+  url <- paste0("https://www.ncbi.nlm.nih.gov/pubmed/?term=", author,  "[Author] AND Harvard[Affiliation]")
+  url <- str_replace_all(url, " ", "%20")
+  html <- htmlParse(getURL(url),encoding="UTF-8")
+  count <- as.numeric(html["//meta/@content"][[16]])
+  if(length(count) == 0) {
+    count <- 0
+  }
+  return(count)
+}
+
+all_counts <- vector()
+for(i in 1:length(first_last)) {
+  all_counts[i] <- getCount(first_last[i])
+  Sys.sleep(10+runif(1)*20)       #random pause to fake human clicking or downloading
+}
+
+cbind(first_last, all_counts)
+
+
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
