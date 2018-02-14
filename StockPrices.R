@@ -25,7 +25,7 @@ rs <- rsDriver(extraCapabilities = list(
     list(prefs = list(
       "profile.default_content_settings.popups" = 0L,
       "download.prompt_for_download" = FALSE,
-      "download.default_directory" = "C:/Users/jkamins1/Desktop/stockcsv"
+      "download.default_directory" = "C:/Users/jkamins1/Documents/bigdata_hw1/stockcsv"
     )
     )
 ))
@@ -41,7 +41,7 @@ downloadHPYahoo <- function(symbol) {
 }
 
 #Download data for stock symbols extracted from wikipedia
-for (s in symbol_names) {
+for (s in symbol_names[c(57,102)]) {
   downloadHPYahoo(s)
 }
 
@@ -57,15 +57,13 @@ for (i in 1:length(files)) {
   write.csv(t, files[i], quote=F, row.names=F, col.names=T)
 }
 
+
 #Merge all csv files
 all_price <- data.frame()
 for (i in 1:length(files)) {
-  if(i == 1) { 
-    result <- TRUE
-  }
-  temp <- read.csv(files[i], header=result)
+  temp <- read.csv(files[i], header=TRUE, stringsAsFactors = FALSE)
   all_price <- rbind(all_price, temp)
 }
 
 #Export csv of merged data
-write.csv(all_price, "stockcsv/all_price.csv", quote = F, row.names = F, col.names = F)
+write.csv(all_price, "stockcsv/all_price.csv", quote = F, row.names = F)
